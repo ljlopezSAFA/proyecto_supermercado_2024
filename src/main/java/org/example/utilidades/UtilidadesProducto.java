@@ -1,6 +1,7 @@
 package org.example.utilidades;
 
 import org.example.enumerados.TipoProducto;
+import org.example.modelos.Almacen;
 import org.example.modelos.Producto;
 
 import java.util.ArrayList;
@@ -22,7 +23,21 @@ public class UtilidadesProducto {
 
         return productosConTipo;
 
+    }
+
+
+    public static List<Producto> getPorAlmacen(List<Producto> productos, Almacen almacen){
+
+        List<Producto> productosFinal = new ArrayList<>();
+
+        for(Producto p : productos){
+            if(p.getAlmacen() != null && p.getAlmacen().equals(almacen)){
+                productosFinal.add(p);
+            }
+        }
+        return productosFinal;
 
     }
+
 
 }
