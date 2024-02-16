@@ -8,14 +8,9 @@ import org.example.enumerados.TipoCliente;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @ToString
-public class Cliente {
-    private Integer identificador;
-    private String dni;
-    private String nombre;
-    private String apellidos;
-    private String direccion;
+public class Cliente extends Persona {
     private TipoCliente tipoCliente;
 
 }

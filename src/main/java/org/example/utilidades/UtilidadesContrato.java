@@ -1,9 +1,9 @@
 package org.example.utilidades;
 
 import org.example.enumerados.TipoContrato;
-import org.example.modelos.Contrato;
-import org.example.modelos.Empleado;
+import org.example.modelos.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -144,8 +144,78 @@ public class UtilidadesContrato {
     }
 
 
+    public Empleado contratarTrabajador(Empresa e, String dni,
+                                        String nombre, String apellidos, String direccion,
+                                        String telefono, TipoContrato tipo, Double salario){
+
+        Empleado empleado = new Empleado();
+        empleado.setIdentificador(Integer.valueOf(dni.substring(0,8)));
+//        empleado.setIdentificador(Long.valueOf(System.currentTimeMillis()).intValue());
+//        empleado.setIdentificador(empleado.hashCode());
+        empleado.setDni(dni);
+        empleado.setNombre(nombre);
+        empleado.setApellidos(apellidos);
+        empleado.setDireccion(direccion);
+        empleado.setNumTelefono(telefono);
+
+        Contrato contrato = new Contrato();
+        contrato.setIdentificador(contrato.hashCode());
+        contrato.setTipoContrato(tipo);
+        contrato.setSalario(salario);
 
 
+//        e.getEmpleados().add(empleado);
+        empleado.setEmpresa(e);
+        empleado.setContrato(contrato);
+
+        return empleado;
+    }
+
+
+    public static boolean validarAlmacenes(List<Producto> productos){
+        Map<Almacen,List<Producto>> mapa  = productos.stream().collect(Collectors.groupingBy(Producto::getAlmacen));
+        return mapa.entrySet()
+                .stream()
+                .noneMatch(a-> a.getKey().getCapacidad() < a.getValue().size());
+    }
+
+
+
+    public static boolean validarAlmacenesOF(List<Producto> productos){
+
+        Map<Almacen, Integer> almacenesCapacidad = new HashMap<>();
+
+
+        for(Producto p : productos){
+            if(almacenesCapacidad.containsKey(p.getAlmacen())){
+                almacenesCapacidad.put(p.getAlmacen(), almacenesCapacidad.get(p.getAlmacen()) + 1);
+            }else{
+                almacenesCapacidad.put(p.getAlmacen(), 1);
+            }
+        }
+
+        for(Almacen a : almacenesCapacidad.keySet()){
+
+            if(a.getCapacidad() < almacenesCapacidad.get(a)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    public Map<TipoContrato, List<Empleado>> getEmpleadosPorTipoContrato(Empresa empresa){
+        return empresa.getEmpleados()
+                .stream()
+                .collect(Collectors.groupingBy(e-> e.getContrato().getTipoContrato()));
+    }
+
+    public Map<Empresa, Map<TipoContrato, List<Empleado>>> getEmpleadosPorTipoContrato(List<Empresa> empresas){
+        Map<Empresa, Map<TipoContrato, List<Empleado>>> mapa = new HashMap<>();
+        empresas.forEach( e -> mapa.put(e, getEmpleadosPorTipoContrato(e)));
+        return mapa;
+    }
 
 
 }

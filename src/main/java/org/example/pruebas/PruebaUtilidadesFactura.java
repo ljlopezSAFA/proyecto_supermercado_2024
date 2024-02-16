@@ -54,9 +54,9 @@ public class PruebaUtilidadesFactura {
 //        }
 
 
-        Cliente cliente  = new Cliente(1, null,"Pepe", "García", "Calle Calatrava", TipoCliente.PARTICULAR );
+//        Cliente cliente  = new Cliente(1, null,"Pepe", "García", "Calle Calatrava", TipoCliente.PARTICULAR );
 
-        System.out.println(UtilidadesCliente.esDniValido(cliente));
+//        System.out.println(UtilidadesCliente.esDniValido(cliente));
 
 
     }
